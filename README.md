@@ -48,6 +48,6 @@ To get started with the project, follow these steps:
 3. Run Project by:
    
    ```bash
-   npm staart
+   npm start
 
   
