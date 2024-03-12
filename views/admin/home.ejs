@@ -1,0 +1,36 @@
+
+<%- include ('../layouts/header.ejs')%>
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <%- include ('../layouts/spinner.ejs')%>
+
+
+        <%- include ('../layouts/sidebar.ejs')%>
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <%- include ('../layouts/navbar.ejs')%>
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <h1>Welcome <%=userName%></h1>  
+                    <br>
+                    <br>
+                    <img src="https://gifrun.com/images/Comets-1.1s-bl200px.gif" alt="">
+                    
+                </div>
+                
+            </div>
+            <!-- Recent Sales End -->
+            <%- include ('../layouts/footerDiv.ejs')%>
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <%- include ('../layouts/footer.ejs')%>

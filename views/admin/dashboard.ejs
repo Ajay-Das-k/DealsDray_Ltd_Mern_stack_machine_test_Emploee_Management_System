@@ -1,0 +1,177 @@
+
+<%- include ('../layouts/header.ejs')%>
+<body>
+   
+    <div class="container-fluid position-relative d-flex p-0">
+        <%- include ('../layouts/spinner.ejs')%>
+
+
+        <%- include ('../layouts/sidebar.ejs')%>
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <%- include ('../layouts/navbar.ejs')%>
+
+
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <a href="/admin/addemployee">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-user-plus fa-3x text-primary"></i>
+                            <div class="ms-3">
+                               
+                                <h6 class="mb-0">Add Employee</h6>
+                            </div>
+                        </div>
+                        </a>
+                    </div> 
+                    <div class="col-sm-6 col-xl-3">
+                       
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-users fa-3x text-primary"></i>
+                            <div class="ms-3">
+                               
+                                <h6 class="mb-0">EmployeeCount : <%= employeeCount %></h6>
+                            </div>
+                        </div>
+                        
+                    </div> 
+                </div>
+            </div>
+            <!-- Sale & Revenue End -->
+
+
+     
+
+
+            <!-- Recent Sales Start -->
+
+            <div class="container-fluid pt-4 px-4" id="employeeTableContainer">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Employees</h6>
+                        <p>
+                          
+                        </p>
+                    </div>
+                     <% if (employeeData && employeeData.length > 0) { %>
+
+    <div class="table-responsive">
+        <table class="table text-start align-middle table-bordered table-hover mb-0" id="user-table">
+            <thead>
+                <tr class="text-white">
+                    <th scope="col">Si.No</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Created Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < employeeData.length; i++) { %>
+                    <!-- Define the formatDate function -->
+                    <!-- Your table row -->
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><img class="rounded-circle me-lg-2" src="/images/userProfile/<%= employeeData[i].image %>" alt="Employee Image" style="width: 40px; height: 40px;"></td>
+                        <td><%= employeeData[i].name %></td>
+                        <td><%= employeeData[i].email %></td>
+                        <td><%= employeeData[i].mobileNumber %></td>
+                        <td><%= employeeData[i].designation %></td>
+                        <td><%= employeeData[i].gender %></td>
+                        <td><%= employeeData[i].courses.join(', ') %></td>
+                        <!-- Format the createdAt date using the formatDate function -->
+                        <td><%= new Date(employeeData[i].createdAt).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: '2-digit' }) %></td>
+                        <td >
+                            <a class="btn btn-sm btn-warning m-1" href="/admin/edit-employee?id=<%=employeeData[i]._id%>">Edit</a>
+                            <button class="btn btn-sm btn-primary delete-employee-btn m-1" data-employee-id="<%= employeeData[i]._id %>">Delete</button>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+<% } else { %>
+    <p>No data available</p>
+
+<% } %>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+           
+
+
+            <%- include ('../layouts/footerDiv.ejs')%>
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+    
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+
+        const deleteButtons = document.querySelectorAll('.delete-employee-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', async function () {
+                const employeeId = this.getAttribute('data-employee-id');
+                try {
+                    const response = await fetch(`/admin/delete_employees/${employeeId}`, {
+                        method: 'DELETE',
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        // Show success message using SweetAlert
+                        swal({
+                            title: 'Employee Deleted',
+                            text: 'Employee deleted successfully',
+                            icon: 'success',
+                        }).then(() => {
+                            // Reload the webpage
+                            window.location.reload();
+                        });
+                    } else {
+                        // Show error message using SweetAlert
+                        swal({
+                            title: 'Error',
+                            text: data.message || 'An error occurred while deleting the employee',
+                            icon: 'error',
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error deleting employee:', error);
+                    // Show error message using SweetAlert
+                    swal({
+                        title: 'Error',
+                        text: 'An error occurred while deleting the employee',
+                        icon: 'error',
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+    <%- include ('../layouts/footer.ejs')%>

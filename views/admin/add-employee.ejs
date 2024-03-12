@@ -1,0 +1,262 @@
+
+<%- include ('../layouts/header.ejs')%>
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <%- include ('../layouts/spinner.ejs')%>
+
+
+        <%- include ('../layouts/sidebar.ejs')%>
+
+
+   
+        <div class="content">
+            <%- include ('../layouts/navbar.ejs')%>
+
+
+           
+             <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Add employee</h6>
+                            <form id="employeeForm" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="exampleInputName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="employeeName" required>
+                                    <div id="nameError" class="error-message text-danger"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail" name="email" aria-describedby="employeeEmail" required>
+                                    <div id="emailError" class="error-message text-danger"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputNumber" class="form-label">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="exampleInputNumber" name="mobileNumber" aria-describedby="employeeNumber" required>
+                                    <div id="mobileError" class="error-message text-danger"></div>
+                                </div>
+                                <legend class="col-form-label col-sm-2 pt-0">Designation</legend>
+    <select class="form-select mb-3" aria-label="Designation" name="designation" id="designation" required>
+        <option selected disabled>Select Designation</option>
+        <option value="HR">HR</option>
+        <option value="Manager">Manager</option>
+        <option value="Sales">Sales</option>
+    </select>
+    <div id="designationError" class="error-message text-danger"></div>
+                                <fieldset class="row mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="male" checked>
+                                            <label class="form-check-label" for="gridRadios1">Male</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="female">
+                                            <label class="form-check-label" for="gridRadios2">Female</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="row mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Courses</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="MCA" name="courses">
+                                            <label class="form-check-label" for="inlineCheckbox1">MCA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="BCA" name="courses">
+                                            <label class="form-check-label" for="inlineCheckbox2">BCA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="BSC" name="courses">
+                                            <label class="form-check-label" for="inlineCheckbox3">BSC</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div id="coursesError" class="error-message text-danger"></div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Upload Image</label>
+                                    <input class="form-control bg-dark" type="file" id="formFile" name="image" required>
+                                    <div id="imageError" class="error-message text-danger"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="submitButton" disabled>Submit</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+          
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Function to validate name
+    const validateName = () => {
+        const nameInput = document.getElementById('exampleInputName');
+        const nameError = document.getElementById('nameError');
+        const nameRegex = /^[A-Za-z][A-Za-z\s]{2,}$/;
+        if (!nameRegex.test(nameInput.value)) {
+            nameError.textContent = 'Name must be at least 3 characters long, start with a letter, and contain no special characters or numbers (except spaces).';
+            return false;
+        } else {
+            nameError.textContent = '';
+            return true;
+        }
+    };
+
+    // Function to validate email
+    const validateEmail = () => {
+        const emailInput = document.getElementById('exampleInputEmail');
+        const emailError = document.getElementById('emailError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            return false;
+        } else {
+            emailError.textContent = '';
+            return true;
+        }
+    };
+
+    // Function to validate mobile number
+    const validateMobileNumber = () => {
+        const mobileInput = document.getElementById('exampleInputNumber');
+        const mobileError = document.getElementById('mobileError');
+        const mobileRegex = /^(?!.*([0])\1{2})[0-9]{10}$/;
+        if (!mobileRegex.test(mobileInput.value)) {
+            mobileError.textContent = 'Please enter a valid 10-digit mobile number with no repeating zeroes (max 3 times).';
+            return false;
+        } else {
+            mobileError.textContent = '';
+            return true;
+        }
+    };
+
+    // Function to validate image file
+    const validateImage = () => {
+        const fileInput = document.getElementById('formFile');
+        const imageError = document.getElementById('imageError');
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(fileInput.value)) {
+            imageError.textContent = 'Please upload a valid image file (JPG or PNG format).';
+            return false;
+        } else {
+            imageError.textContent = '';
+            return true;
+        }
+    };
+
+     // Function to validate designation
+     const validateDesignation = () => {
+    const designationSelect = document.getElementById('designation');
+    const designationError = document.getElementById('designationError');
+    const validDesignations = ["HR", "Manager", "Sales"];
+
+    if (designationSelect.value === "" || !validDesignations.includes(designationSelect.value)) {
+        designationError.textContent = 'Please select a valid designation (HR, Manager, or Sales).';
+        return false;
+    } else {
+        designationError.textContent = '';
+        return true;
+    }
+};
+    // Function to validate at least one checkbox checked for courses
+    const validateCourses = () => {
+        const checkboxes = document.querySelectorAll('input[name="courses"]:checked');
+        const coursesError = document.getElementById('coursesError');
+        if (checkboxes.length === 0) {
+            coursesError.textContent = 'Please select at least one course.';
+            return false;
+        } else {
+            coursesError.textContent = '';
+            return true;
+        }
+    };
+
+    // Function to enable/disable submit button based on validation results
+  const validateForm = () => {
+    const nameValid = validateName();
+    const emailValid = validateEmail();
+    const mobileValid = validateMobileNumber();
+    const imageValid = validateImage();
+    const designationValid = validateDesignation(); // Add this line
+    const coursesValid = validateCourses();
+    const submitButton = document.getElementById('submitButton');
+    if (nameValid && emailValid && mobileValid && imageValid && designationValid && coursesValid) {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
+};
+
+    // Add event listeners for input fields to validate on blur
+    document.getElementById('exampleInputName').addEventListener('blur', validateForm);
+    document.getElementById('exampleInputEmail').addEventListener('blur', validateForm);
+    document.getElementById('exampleInputNumber').addEventListener('blur', validateForm);
+    document.getElementById('formFile').addEventListener('blur', validateForm);
+    document.getElementById('designation').addEventListener('change', validateForm);
+    document.querySelectorAll('input[name="courses"]').forEach(input => {
+        input.addEventListener('change', validateForm);
+    });
+
+    // Add event listener for form submission to perform final validation
+    document.getElementById('employeeForm').addEventListener('submit', validateForm);
+</script>
+
+<script>
+    const submitForm = async (event) => {
+        event.preventDefault(); 
+
+        const form = document.getElementById('employeeForm');
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch('/admin/addemployee', { 
+                method: 'POST',
+                body: formData
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: responseData.message,
+                }).then(() => {
+                    window.location.href = '/admin/dashboard';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: responseData.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while submitting the form. Please try again later.',
+            });
+        }
+    };
+    document.getElementById('employeeForm').addEventListener('submit', submitForm);
+</script>
+
+
+
+           
+
+
+            <%- include ('../layouts/footerDiv.ejs')%>
+        </div>
+      
+
+      
+       
+
+
+
+
+    <%- include ('../layouts/footer.ejs')%>

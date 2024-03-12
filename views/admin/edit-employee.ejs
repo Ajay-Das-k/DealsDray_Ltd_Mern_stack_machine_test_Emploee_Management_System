@@ -1,0 +1,177 @@
+
+<%- include ('../layouts/header.ejs')%>
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <%- include ('../layouts/spinner.ejs')%>
+
+
+        <%- include ('../layouts/sidebar.ejs')%>
+
+
+   
+        <div class="content">
+            <%- include ('../layouts/navbar.ejs')%>
+
+
+           
+             <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4"><img <img class="rounded-circle me-lg-2" src="/images/userProfile/<%= employeeData.image %>" alt="Employee Image" style="width: 40px; height: 40px;">Edit Employee <%=employeeData.name%> </h6>
+                            
+                            <form id="employeeForm" method="post" action=""  enctype="multipart/form-data">
+                                <!-- Hidden input field to store the employee ID -->
+                                <input type="hidden" name="id" value="<%= employeeData._id %>">
+                                <div class="mb-3">
+                                    <label for="exampleInputName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="employee name" required value="<%= employeeData.name %>" > 
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail" name="email" aria-describedby="employee email" required value="<%= employeeData.email %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputNumber" class="form-label">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="exampleInputNumber" name="mobileNumber" aria-describedby="employee name" required value="<%= employeeData.mobileNumber %>"> 
+                                </div>
+                                <legend class="col-form-label col-sm-2 pt-0">Designation</legend>
+                                <select class="form-select mb-3" aria-label="Designation" name="designation" required>
+                                    <option disabled>Designation</option>
+                                    <option value="HR" <%if(employeeData.designation=='HR'){%>selected<%}%>>HR</option>
+                                    <option value="Manager" <%if(employeeData.designation=='Manager'){%>selected<%}%>>Manager</option>
+                                    <option value="Sales" <%if(employeeData.designation=='Sales'){%>selected<%}%>>Sales</option>
+                                </select>
+                                
+                            
+                                <fieldset class="row mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="male"
+                                            <%if(employeeData.gender=='male'){%>checked<%}%>>
+                                            <label class="form-check-label" for="gridRadios1">
+                                                Male
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="female"
+                                            <%if(employeeData.gender=='female'){%>checked<%}%>>
+                                            <label class="form-check-label" for="gridRadios2">
+                                                Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            
+                                <fieldset class="row mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Courses</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="MCA" name="courses"
+                                            <%if(employeeData.courses.includes('MCA')){%>checked<%}%>>
+                                            <label class="form-check-label" for="inlineCheckbox1">MCA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="BCA" name="courses"
+                                            <%if(employeeData.courses.includes('BCA')){%>checked<%}%>>
+                                            <label class="form-check-label" for="inlineCheckbox2">BCA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="BSC" name="courses"
+                                            <%if(employeeData.courses.includes('BSC')){%>checked<%}%>>
+                                            <label class="form-check-label" for="inlineCheckbox3">BSC</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Upload Image</label>
+                                    <input class="form-control bg-dark" type="file" id="formFile" name="image">
+                                </div>
+                                
+                            
+                                
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+          
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                // Function to submit the form data
+                const submitForm = async (event) => {
+                    // Prevent default form submission behavior
+                    event.preventDefault(); 
+            
+                    // Get the form element
+                    const form = document.getElementById('employeeForm');
+            
+                    try {
+                        // Send a POST request to the server using AJAX
+                        const response = await fetch('/admin/edit-employee', { 
+                            method: 'POST',
+                            body: new FormData(form) // Send form data directly
+                        });
+            
+                        // Parse the JSON response
+                        const responseData = await response.json();
+                        console.log(responseData);
+            
+                        // Check if the response is successful
+                        if (response.ok) {
+                            // If successful, display success message and redirect
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: responseData.message,
+                            }).then(() => {
+                                window.location.href = '/admin/dashboard';
+                            });
+                        } else {
+                            // If there's an error, display error message
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: responseData.message,
+                            });
+                        }
+                    } catch (error) {
+                        // If an error occurs, display generic error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while submitting the form. Please try again later.',
+                        });
+                    }
+                };
+            
+                // Add event listener to the form submission event
+                document.getElementById('employeeForm').addEventListener('submit', submitForm);
+            </script>
+            
+            
+
+
+
+
+
+           
+
+
+            <%- include ('../layouts/footerDiv.ejs')%>
+        </div>
+      
+
+      
+       
+
+
+
+
+    <%- include ('../layouts/footer.ejs')%>
