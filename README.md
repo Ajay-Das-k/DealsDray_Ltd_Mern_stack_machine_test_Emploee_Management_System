@@ -12,8 +12,7 @@ Test to be created in MERN for the panel while for API's you need to
 	Manage User Name on Dashboard by local storage  sessions
 
 
-    ![Clone](https://i.pinimg.com/originals/e3/52/6f/e3526f9d3757ec5610f24e25d4be4acc.gif)
-
+![Clone](https://i.pinimg.com/originals/e3/52/6f/e3526f9d3757ec5610f24e25d4be4acc.gif)
 ##GitHub Repo : github.com/Ajay-Das-k/DealsDray_Ltd_Mern_stack_machine_test_Emploee_Management_System 
 (https://github.com/Ajay-Das-k/DealsDray_Ltd_Mern_stack_machine_test_Emploee_Management_System.git)
 
