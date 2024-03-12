@@ -30,6 +30,12 @@ Test to be created in MERN for the panel while for API's you need to
 
 ## Getting Started
 
+create .env with variables
+
+PORT=5000
+sessionSecret =mysitesessionsecret;
+MONGODB_URL=mongodb+srv://user:Password@machinetask.4riotip.mongodb.net/?retryWrites=true&w=majority&appName=MachineTask
+
 To get started with the project, follow these steps:
 
 1. Go to the project directory.
@@ -37,8 +43,8 @@ To get started with the project, follow these steps:
    
    ```bash
     npm i nodemon -g
-
    npm install
+
 3. Run Project by:
    
    ```bash
